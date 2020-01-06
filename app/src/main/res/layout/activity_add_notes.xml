@@ -11,12 +11,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
             android:ems="10"
             android:id="@+id/etName" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp" android:layout_marginTop="40dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" android:hint="Enter title"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,7 +25,8 @@
             android:id="@+id/etDes" android:layout_marginTop="100dp"
             app:layout_constraintTop_toBottomOf="@+id/etName" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
+            android:hint="Enter description"/>
     <Button
             android:text="ADD NOTE"
             android:layout_width="wrap_content"
@@ -34,5 +34,6 @@
             android:id="@+id/btnAdd" android:layout_marginBottom="88dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="64dp" android:layout_marginRight="64dp"
-            android:background="@drawable/button_blue"/>
+            android:background="@drawable/button_blue" android:onClick="onClickAdd"/>
+
 </android.support.constraint.ConstraintLayout>
