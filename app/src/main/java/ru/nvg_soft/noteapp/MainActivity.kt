@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         loadQuery("%")
     }
 
+    override  fun onResume() {
+        super.onResume()
+        loadQuery("%")
+    }
+
     fun loadQuery(title:String){
 
 
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             }while (cursor.moveToNext())
         }
 
-        var myNotesAdapter= MyNoteAdapter(listOfNotes)
+        var myNotesAdapter= MyNoteAdapter(this, listOfNotes)
         lvNotes.adapter=myNotesAdapter
 
 
@@ -88,14 +93,27 @@ class MainActivity : AppCompatActivity() {
     }
     inner class MyNoteAdapter:BaseAdapter{
         var listNotes = ArrayList<Note>()
-        constructor(listNotes:ArrayList<Note>){
+        var context:Context? = null
+        constructor(context: Context,listNotes:ArrayList<Note>){
             this.listNotes = listNotes
+            this.context =context
         }
         override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
             var myView = layoutInflater.inflate(R.layout.ticket,null)
             var note = listNotes[p0]
             myView.tvTitle.text = note.noteName
             myView.tvContent.text = note.noteDes
+            myView.ivDelete.setOnClickListener {
+                var dbManager =DBManager(context!!)
+                val selectionArgs= arrayOf(note.noteID.toString())
+                dbManager.Delete("ID=?",selectionArgs)
+                loadQuery("%")
+            }
+            myView.ivEdit.setOnClickListener{
+
+                GoToUpdate(note)
+
+            }
             return myView
         }
 
@@ -110,5 +128,13 @@ class MainActivity : AppCompatActivity() {
         override fun getCount(): Int {
            return listNotes.size
         }
+    }
+
+    fun GoToUpdate(note:Note){
+        var intent=  Intent(this,AddNotes::class.java)
+        intent.putExtra("ID",note.noteID)
+        intent.putExtra("name",note.noteName)
+        intent.putExtra("des",note.noteDes)
+        startActivity(intent)
     }
 }

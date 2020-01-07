@@ -1,6 +1,7 @@
 package ru.nvg_soft.noteapp
 
 import android.content.ContentValues
+import android.os.Build.ID
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,10 +9,21 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_notes.*
 
 class AddNotes : AppCompatActivity() {
-
+    val dbTable="Notes"
+    var id=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notes)
+
+        try{
+            var bundle:Bundle= intent.extras!!
+            id=bundle.getInt("ID",0)
+            if(id!=0) {
+                etName.setText(bundle.getString("name") )
+                etDes.setText(bundle.getString("des") )
+
+            }
+        }catch (ex:Exception){}
     }
 
     fun onClickAdd(view: View){
@@ -19,12 +31,24 @@ class AddNotes : AppCompatActivity() {
         var values = ContentValues()
         values.put("Title", etName.text.toString())
         values.put("Description", etDes.text.toString())
-        val ID = dbManager.Insert(values)
-        if (ID>0){
-            Toast.makeText(this," note is added", Toast.LENGTH_LONG).show()
-            finish()
+
+        if (id==0) {
+            val ID = dbManager.Insert(values)
+            if (ID > 0) {
+                Toast.makeText(this, " note is added", Toast.LENGTH_LONG).show()
+                finish()
+            } else {
+                Toast.makeText(this, " canot add note", Toast.LENGTH_LONG).show()
+            }
         }else{
-            Toast.makeText(this," canot add note",Toast.LENGTH_LONG).show()
+            var selectionArs= arrayOf(id.toString())
+            val ID = dbManager.Update(values,"ID=?",selectionArs)
+            if (ID > 0) {
+                Toast.makeText(this, " note is added", Toast.LENGTH_LONG).show()
+                finish()
+            } else {
+                Toast.makeText(this, " cannot add note ", Toast.LENGTH_LONG).show()
+            }
         }
 
     }

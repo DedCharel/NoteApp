@@ -52,6 +52,18 @@ class DBManager {
         val ID= sqlDB!!.insert(dbTable,"",values)
         return ID
     }
+    fun Delete(selection:String,selectionArgs:Array<String>):Int{
+
+        val count=sqlDB!!.delete(dbTable,selection,selectionArgs)
+        return  count
+    }
+
+    fun Update(values:ContentValues,selection:String,selectionargs:Array<String>):Int{
+
+        val count=sqlDB!!.update(dbTable,values,selection,selectionargs)
+        return count
+    }
+
     fun  Query(projection:Array<String>,selection:String,selectionArgs:Array<String>,sorOrder:String):Cursor{
 
         val qb=SQLiteQueryBuilder()
@@ -59,4 +71,6 @@ class DBManager {
         val cursor=qb.query(sqlDB,projection,selection,selectionArgs,null,null,sorOrder)
         return cursor
     }
+
+
 }
