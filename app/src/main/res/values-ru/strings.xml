@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Мои заметки</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="enter_description">Введите содержание</string>
+    <string name="enter_title">Введите заголовок</string>
+</resources>
