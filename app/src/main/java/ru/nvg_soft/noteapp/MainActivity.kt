@@ -26,11 +26,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listOfNotes.add(Note(1,"Встретить жену", "Незабыть встретить жену с поезда 07.01.20 в 4:33  вагон №3, вокзал Ростовский"))
-        listOfNotes.add(Note(2,"Покормить собаку", "Покормить этого тупого лохматого зверя"))
+        loadQuery("%")
+    }
 
-        adapter = MyNoteAdapter(listOfNotes)
-        lvNotes.adapter = adapter
+    fun loadQuery(title:String){
+
+
+
+        var dbManager=DBManager(this)
+        val projections= arrayOf("ID","Title","Description")
+        val selectionArgs= arrayOf(title)
+        val cursor=dbManager.Query(projections,"Title like ?",selectionArgs,"Title")
+        listOfNotes.clear()
+        if(cursor.moveToFirst()){
+
+            do{
+                val ID=cursor.getInt(cursor.getColumnIndex("ID"))
+                val Title=cursor.getString(cursor.getColumnIndex("Title"))
+                val Description=cursor.getString(cursor.getColumnIndex("Description"))
+
+                listOfNotes.add(Note(ID,Title,Description))
+
+            }while (cursor.moveToNext())
+        }
+
+        var myNotesAdapter= MyNoteAdapter(listOfNotes)
+        lvNotes.adapter=myNotesAdapter
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -41,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String): Boolean {
                 Toast.makeText(applicationContext,query,Toast.LENGTH_LONG).show()
-                //TODO: search database
+                loadQuery("%" + query + "%")
                 return false
             }
 
